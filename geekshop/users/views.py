@@ -3,7 +3,7 @@ from django.contrib import auth
 from django.urls import reverse
 
 # Create your views here.
-from users.forms import UserLoginForm,UserRegisterForm
+from users.forms import UserLoginForm, UserRegisterForm
 
 
 def login(request):
@@ -29,8 +29,23 @@ def login(request):
 
 
 def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('users:login'))
+        else:
+            print(form.errors)
+    else:
+        form = UserRegisterForm()
     context = {
         'title': 'Geekshop - Регистрация',
+        'form': form
 
     }
     return render(request, 'users/register.html', context)
+
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect(reverse('index'))
