@@ -4,7 +4,7 @@
     "pk": 1,
     "fields": {
       "name": "Худи черного цвета с монограммами adidas Originals",
-      "image": "",
+      "image": "product_images/Adidas-hoodie.png",
       "description": "Мягкая ткань для свитшотов. Стиль и комфорт – это образ жизни.",
       "price": "6090.00",
       "quantity": 2,
@@ -28,7 +28,7 @@
     "pk": 3,
     "fields": {
       "name": "Коричневый спортивный oversized-топ ASOS DESIGN",
-      "image": "",
+      "image": "product_images/Brown-sports-oversized-top-ASOS-DESIGN_sKBTqg6.png",
       "description": "Материал с плюшевой текстурой. Удобный и мягкий.",
       "price": "3390.00",
       "quantity": 5,
