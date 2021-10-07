@@ -18,8 +18,6 @@ def login(request):
             if user.is_active:
                 auth.login(request, user)
                 return HttpResponseRedirect(reverse('index'))
-
-
     else:
         form = UserLoginForm()
     context = {
@@ -51,20 +49,31 @@ def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
 
+
 @login_required
 def profile(request):
     if request.method == 'POST':
         form = UserProfileForm(data=request.POST, instance=request.user, files=request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, "Сохранен профиль")
             return HttpResponseRedirect(reverse('users:profile'))
         else:
-            print(form.errors)
+            messages.error(request, "Не сохранен")
+    total_quantity =0
+    total_sum = 0
+    baskets = Basket.objects.filter(user =request.user)
+    for basket in baskets:
+        total_quantity += basket.quantity
+        total_sum += basket.sum()
+
 
     context = {
         'title': 'Geekshop - Профайл',
         'form': UserProfileForm(instance=request.user),
-        'baskets':Basket.objects.filter(user = request.user)
+        'baskets': Basket.objects.filter(user=request.user),
+        'total_quantity': total_quantity,
+        'total_sum': total_sum
 
     }
     return render(request, 'users/profile.html', context)
