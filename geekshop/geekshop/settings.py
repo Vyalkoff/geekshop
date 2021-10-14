@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'products.apps.ProductsConfig',
     'users.apps.UsersConfig',
     'baskets.apps.BasketsConfig',
+    'admins.apps.AdminsConfig',
 
 ]
 
