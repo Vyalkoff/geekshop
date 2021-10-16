@@ -7,10 +7,11 @@ def index(request):
     return render(request, 'products/index.html', context={'title': 'geekshop'})
 
 
-def products(request):
+def products(request, category_id=None):
+    product = Product.objects.filter(category_id=category_id) if category_id is not None else Product.objects.all()
     context = {
         'title': 'geekshop',
-        'products': Product.objects.all(),
+        'products': product,
         'category_products': ProductCategory.objects.all(),
 
     }

@@ -60,13 +60,12 @@ def profile(request):
             return HttpResponseRedirect(reverse('users:profile'))
         else:
             messages.error(request, "Не сохранен")
-    total_quantity =0
+    total_quantity = 0
     total_sum = 0
-    baskets = Basket.objects.filter(user =request.user)
+    baskets = Basket.objects.filter(user=request.user)
     for basket in baskets:
         total_quantity += basket.quantity
         total_sum += basket.sum()
-
 
     context = {
         'title': 'Geekshop - Профайл',
