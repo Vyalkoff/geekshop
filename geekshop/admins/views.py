@@ -16,7 +16,7 @@ def index(request):
     return render(request, 'admins/admin.html')
 
 
-class UserListView(ListView,CustomDispatchMixin):
+class UserListView(ListView, CustomDispatchMixin):
     model = User
     template_name = 'admins/admin-users-read.html'
 
@@ -26,7 +26,7 @@ class UserListView(ListView,CustomDispatchMixin):
         return context
 
 
-class UserCreateView(CreateView,CustomDispatchMixin):
+class UserCreateView(CreateView, CustomDispatchMixin):
     model = User
     template_name = 'admins/admin-users-create.html'
     form_class = UserAdminRegisterForm
