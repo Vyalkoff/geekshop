@@ -15,10 +15,11 @@
 
             <h1 class="my-4">GeekShop</h1>
             <div class="list-group">
+                <a href="{% url 'products:index' %}" class="list-group-item">Все товары</a>
                 {%for category in category_products%}
                 <a href="{% url 'products:category' category.id %}" class="list-group-item">{{category.name}}</a>
                 {% endfor%}
-                <a href="{% url 'products:index' %}" class="list-group-item">Все товары</a>
+
 
             </div>
 

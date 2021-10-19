@@ -27,13 +27,14 @@ def basket_remove(request, product_id):
     Basket.objects.get(id=product_id).delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+
 @login_required
 def basket_edit(request, id, quantity):
     if request.is_ajax():
         basket = Basket.objects.get(id=id)
         if quantity > 0:
-              basket.quantity =  quantity
-              basket.save()
+            basket.quantity = quantity
+            basket.save()
         else:
             basket.delete()
         total_quantity = 0
@@ -43,9 +44,9 @@ def basket_edit(request, id, quantity):
             total_quantity += basket.quantity
             total_sum += basket.sum()
         context = {
-            'baskets':baskets,
-            'total_quantity':total_quantity,
+            'baskets': baskets,
+            'total_quantity': total_quantity,
             'total_sum': total_sum
         }
-        result = render_to_string('baskets/baskets.html',context)
-        return JsonResponse({'result':result})
+        result = render_to_string('baskets/baskets.html', context)
+        return JsonResponse({'result': result})
