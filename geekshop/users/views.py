@@ -36,9 +36,9 @@ class RegisterListView(FormView, BaseClassContextMixin):
             user = form.save()
             if send_verify_link(user):
                 messages.success(request, "Успешная регистрация")
-            return redirect(self.success_url)
+                return redirect(self.success_url)
         else:
-            messages.error(request,form.errors)
+            return render(request, 'users/register.html', {'form': form})
         return redirect(self.success_url)
 
 
@@ -77,7 +77,6 @@ def send_verify_link(user):
 
 
 def verify(request, email, activation_key):
-    try:
         user = User.objects.get(email=email)
         if user and user.activation_key == activation_key and not user.is_activation_key_expired():
             user.activation_key = ''
@@ -86,5 +85,4 @@ def verify(request, email, activation_key):
             user.save()
             auth.login(request, user)
         return render(request, 'users/verification.html')
-    except Exception as e:
-        return HttpResponseRedirect(reverse('index'))
+
