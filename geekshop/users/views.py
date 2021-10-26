@@ -11,7 +11,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView, UpdateView
 
 from geekshop.mixin import BaseClassContextMixin, UserDispatchMixin
-from users.forms import UserLoginForm, UserRegisterForm, UserProfileForm
+from users.forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserProfileEditForm
 from baskets.models import Basket
 from django.contrib.auth.decorators import login_required, user_passes_test
 
@@ -58,12 +58,14 @@ class ProfileFormView(UpdateView, BaseClassContextMixin, UserDispatchMixin):
 
     def get_context_data(self, **kwargs):
         context = super(ProfileFormView, self).get_context_data(**kwargs)
-        context['baskets'] = Basket.objects.filter(user=self.request.user)
+        context['profile'] = UserProfileEditForm(instance=self.request.user.userprofile)
         return context
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(data=request.POST, files=request.FILES, instance=self.get_object())
-        if form.is_valid():
+        form_edit = UserProfileEditForm(data=request.POST,instance=request.user.userprofile)
+
+        if form.is_valid() and form_edit.is_valid():
             form.save()
             return redirect(self.success_url)
         return redirect(self.success_url)
