@@ -26,7 +26,9 @@ class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     created = models.DateTimeField(verbose_name='Создан',auto_now_add=True)
     update = models.DateTimeField(verbose_name='Обновлен',auto_now= True)
-    status = models.CharField(choices='',verbose_name='Статус',max_length=3,default='')
+    status = models.CharField(choices=ORDER_STATUS_CHOICES,verbose_name='Статус',max_length=3,default= FORMING)
+    is_active = models.BooleanField(verbose_name='активен', default=True)
+
 
     def __str__(self):
         return f'Текущий заказ {self.pk}'
@@ -37,11 +39,17 @@ class Order(models.Model):
 
     def get_total_cost(self):
         items = self.orderitems.select_related()
-        return sum(list(map(lambda x: x.get_product_cost,items)))
+        return sum(list(map(lambda x: x.get_product_cost(),items)))
 
     def get_items(self):
         pass
 
+    def delete(self, using=None, keep_parents=False):
+        for item in self.orderitems.select_related():
+            item.product.quantity += item.quantity
+            item.save()
+        self.is_active = False
+        self.save()
 class OrderItem(models.Model):
     order = models.ForeignKey(Order,verbose_name='заказ',related_name='orderitems',on_delete=models.CASCADE)
     product = models.ForeignKey(Product,verbose_name='продукты', on_delete=models.CASCADE)
