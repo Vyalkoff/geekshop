@@ -5,5 +5,5 @@ db.sqlite3
 venv
 .env
 /tmp
-vk
+
 text
